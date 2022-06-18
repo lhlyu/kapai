@@ -17,7 +17,7 @@ func init() {
 		AppID:   os.Getenv("APP_ID"),
 		Key:     os.Getenv("APP_KEY"),
 		Secret:  os.Getenv("APP_SECRET"),
-		Cluster: os.Getenv("APP_API"),
+		Cluster: os.Getenv("APP_CLUSTER"),
 	}
 }
 
