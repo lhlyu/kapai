@@ -3,5 +3,9 @@
     "api/**.go": {
       "includeFiles": "api/**"
     }
-  }
+  },
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
 }
