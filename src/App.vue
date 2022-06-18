@@ -4,31 +4,43 @@
 
 <script lang="ts" setup>
 import {onMounted, ref} from "vue";
-import {
-    Application,
-    Container,
-    Sprite,
-    filters,
-    Graphics
-} from 'pixi.js'
+import * as PIXI from 'pixi.js'
+import { gsap } from "gsap";
+import { PixiPlugin } from "gsap/PixiPlugin"
 
-const app = new Application({
+gsap.registerPlugin(PixiPlugin);
+PixiPlugin.registerPIXI(PIXI)
+
+const app = new PIXI.Application({
     backgroundColor: 0x000000,
     backgroundAlpha: 0.5,
     resizeTo: document.body,
     antialias: true
 })
 
-let container = new Container();
+let container = new PIXI.Container();
 
-app.stage.addChild(container)
 
-let sprite = Sprite.from("https://s3-us-west-2.amazonaws.com/s.cdpn.io/693612/IaUrttj.png");
 
-sprite.width = 128;
-sprite.height = 128;
+const sprite = PIXI.Sprite.from("https://s3-us-west-2.amazonaws.com/s.cdpn.io/693612/IaUrttj.png");
+
+sprite.width = 64;
+sprite.height = 64;
+
 
 container.addChild(sprite);
+
+window.addEventListener('mousemove', (ev) => {
+    gsap.to(sprite, {
+        pixi: {
+            x: ev.x,
+            y: ev.y,
+        },
+        duration: 0.4
+    })
+})
+
+app.stage.addChild(container)
 
 
 

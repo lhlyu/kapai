@@ -7,3 +7,4 @@
 
 - [pusher](https://pusher.com/)
 - [pixijs](https://pixijs.com/)
+- [gsap](https://greensock.com/gsap/)
