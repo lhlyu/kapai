@@ -17,7 +17,7 @@ export const routes: RouteRecordRaw[] = [
     },
     {
         name: 'Game',
-        path: '/g',
+        path: '/g/:id',
         component: GameView
-    },
+    }
 ]

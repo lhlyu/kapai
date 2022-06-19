@@ -12,17 +12,16 @@ import (
 
 type Player struct {
 	Id       string `json:"id"`
-	Nickname string `json:"nickname"`
-	Color    string `json:"color"`
-	RoomId   string `json:"room_id"`
+	Name     string `json:"name"`
+	RoomId   string `json:"roomId"`
 }
 
 type Room struct {
 	Id string `json:"id"`
 	// 1 - 等待; 2 - 游戏中
 	Status  int     `json:"status"`
-	Player1 *Player `json:"player_1"`
-	Player2 *Player `json:"player_2"`
+	Player1 *Player `json:"player1"`
+	Player2 *Player `json:"player2"`
 }
 
 var rooms = sync.Map{}
