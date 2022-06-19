@@ -1,9 +1,9 @@
 package api
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"errors"
-	"github.com/itchyny/base58-go"
 	"net/http"
 	"strconv"
 	"sync"
@@ -11,9 +11,9 @@ import (
 )
 
 type Player struct {
-	Id       string `json:"id"`
-	Name     string `json:"name"`
-	RoomId   string `json:"roomId"`
+	Id     string `json:"id"`
+	Name   string `json:"name"`
+	RoomId string `json:"roomId"`
 }
 
 type Room struct {
@@ -27,12 +27,11 @@ type Room struct {
 var rooms = sync.Map{}
 var lock = sync.Mutex{}
 
-var encoding = base58.FlickrEncoding
-
 // 解析参数
 func parseQuery(field string, r *http.Request, v interface{}) error {
 	val := r.URL.Query().Get(field)
-	b, err := encoding.Decode([]byte(val))
+
+	b, err := base64.StdEncoding.DecodeString(val)
 	if err != nil {
 		return err
 	}

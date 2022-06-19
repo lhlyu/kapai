@@ -1,5 +1,5 @@
 import instance from './request'
-import { base58Encode } from '../util'
+import {base64Encode} from '../util'
 
 export const ApiAuthUrl = '/api/auth'
 
@@ -18,7 +18,7 @@ export interface Room {
 
 // 创建房间
 export const ApiCreateRoom = async (player: Player) => {
-    return await instance.get<Player>(`/api/create_room?r=${base58Encode(JSON.stringify(player))}`)
+    return await instance.get<Player>(`/api/create_room?r=${base64Encode(JSON.stringify(player))}`)
 }
 
 // 获取房间列表
@@ -33,10 +33,10 @@ export const ApiGetRoom = async (id: string) => {
 
 // 加入房间
 export const ApiJoinRoom = async (player: Player) => {
-    return await instance.get(`/api/join_room?r=${base58Encode(JSON.stringify(player))}`)
+    return await instance.get(`/api/join_room?r=${base64Encode(JSON.stringify(player))}`)
 }
 
 // 离开房间
 export const ApiLeaveRoom = async (player: Player) => {
-    return await instance.get(`/api/leave_room?g=${base58Encode(JSON.stringify(player))}`)
+    return await instance.get(`/api/leave_room?g=${base64Encode(JSON.stringify(player))}`)
 }
