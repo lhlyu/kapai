@@ -1,6 +1,8 @@
-import CryptoJS from 'crypto-js';
 
-export const base64Encode = (str: string):string => {
-    const wordArray = CryptoJS.enc.Utf8.parse(str)
-    return CryptoJS.enc.Base64.stringify(wordArray)
+
+export const Encode = (str: string):string => {
+    return encodeURIComponent(str)
 }
+
+
+console.log(Encode('{"id":"123","name":"123","roomId":"123"}'))

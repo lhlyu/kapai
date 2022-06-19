@@ -1,10 +1,10 @@
 package api
 
 import (
-	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"net/http"
+	"net/url"
 	"strconv"
 	"sync"
 	"time"
@@ -30,12 +30,11 @@ var lock = sync.Mutex{}
 // 解析参数
 func parseQuery(field string, r *http.Request, v interface{}) error {
 	val := r.URL.Query().Get(field)
-
-	b, err := base64.StdEncoding.DecodeString(val)
+	s, err := url.PathUnescape(val)
 	if err != nil {
 		return err
 	}
-	return json.Unmarshal(b, v)
+	return json.Unmarshal([]byte(s), v)
 }
 
 // 生成房间id
