@@ -3,6 +3,7 @@ package api
 import (
 	"encoding/json"
 	"errors"
+	"log"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -54,6 +55,11 @@ func getRoomId() string {
 	}
 }
 
+func toJson(v interface{}) string {
+	b, _ := json.Marshal(v)
+	return string(b)
+}
+
 // CreateRoom 创建房间
 func CreateRoom(w http.ResponseWriter, r *http.Request) {
 	player := &Player{}
@@ -77,6 +83,9 @@ func CreateRoom(w http.ResponseWriter, r *http.Request) {
 		Player1: player,
 	})
 
+	v, _ := rooms.Load(id)
+
+	log.Println("【创建房间】:", toJson(v))
 	NewResult(player, 0, nil).Fprintf(w)
 
 }
