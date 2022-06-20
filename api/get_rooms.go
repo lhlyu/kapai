@@ -1,31 +1,29 @@
 package api
 
 import (
+	"context"
+	"go.mongodb.org/mongo-driver/bson"
 	"log"
 	"net/http"
-	"sort"
 )
 
 // GetRooms 获取房间
 func GetRooms(w http.ResponseWriter, r *http.Request) {
+	cur, err := collection.Find(context.Background(), bson.M{})
+	if err != nil {
+		NewResult(nil, 2400, err).Fprintf(w)
+		return
+	}
 
 	rs := make([]*Room, 0)
-
-	rooms.Range(func(key, value any) bool {
-		if value == nil {
-			log.Println("【获取房间】:", key)
-			return true
+	for cur.Next(context.Background()) {
+		room := &Room{}
+		cur.Decode(room)
+		if room.Id != "" {
+			rs = append(rs, room)
 		}
-		rs = append(rs, value.(*Room))
-		return true
-	})
-
-	sort.SliceStable(rs, func(i, j int) bool {
-		return rs[i].Id > rs[j].Id
-	})
-
+	}
 	log.Println("【当前房间数】:", len(rs))
-
 	NewResult(rs, 0, nil).Fprintf(w)
 	return
 }

@@ -1,7 +1,9 @@
 package api
 
 import (
+	"context"
 	"errors"
+	"go.mongodb.org/mongo-driver/bson"
 	"net/http"
 )
 
@@ -20,23 +22,29 @@ func JoinRoom(w http.ResponseWriter, r *http.Request) {
 		NewResult(nil, 2102, errors.New("room id miss")).Fprintf(w)
 		return
 	}
-	val, ok := rooms.Load(player.RoomId)
-	if !ok {
-		NewResult(nil, 2103, errors.New("room does not exist")).Fprintf(w)
+
+	room := &Room{}
+	if err := collection.FindOne(context.Background(), bson.M{
+		"id": player.RoomId,
+	}).Decode(room); err != nil {
+		NewResult(nil, 2103, err).Fprintf(w)
 		return
 	}
-	room := val.(*Room)
+	if room.Id == "" {
+		NewResult(nil, 2104, errors.New("room does not exist")).Fprintf(w)
+		return
+	}
 	if room.Status == 2 {
-		NewResult(nil, 2104, errors.New("room is full")).Fprintf(w)
+		NewResult(nil, 2105, errors.New("room is full")).Fprintf(w)
 		return
 	}
 	if room.Player1 == nil && room.Player2 == nil {
-		rooms.Delete(room.Id)
-		NewResult(nil, 2105, errors.New("room does not exist")).Fprintf(w)
+		collection.DeleteOne(context.Background(), bson.M{"id": room.Id})
+		NewResult(nil, 2106, errors.New("room does not exist")).Fprintf(w)
 		return
 	}
 	if room.Player1 != nil && room.Player2 != nil {
-		NewResult(nil, 2106, errors.New("room is full")).Fprintf(w)
+		NewResult(nil, 2107, errors.New("room is full")).Fprintf(w)
 		return
 	}
 	if room.Player1 == nil {
@@ -47,7 +55,15 @@ func JoinRoom(w http.ResponseWriter, r *http.Request) {
 	}
 
 	room.Status = 2
-	rooms.Store(room.Id, room)
+
+	collection.UpdateOne(context.Background(), bson.M{"id": room.Id}, bson.M{
+		"$set": bson.M{
+			"status":  room.Status,
+			"player1": room.Player1,
+			"player2": room.Player2,
+		},
+	})
+
 	NewResult("ok", 0, nil).Fprintf(w)
 	return
 }

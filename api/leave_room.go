@@ -1,7 +1,9 @@
 package api
 
 import (
+	"context"
 	"errors"
+	"go.mongodb.org/mongo-driver/bson"
 	"net/http"
 )
 
@@ -20,12 +22,18 @@ func LeaveRoom(w http.ResponseWriter, r *http.Request) {
 		NewResult(nil, 2202, errors.New("room id miss")).Fprintf(w)
 		return
 	}
-	val, ok := rooms.Load(player.RoomId)
-	if !ok {
-		NewResult(nil, 2203, errors.New("room does not exist")).Fprintf(w)
+
+	room := &Room{}
+	if err := collection.FindOne(context.Background(), bson.M{
+		"id": player.RoomId,
+	}).Decode(room); err != nil {
+		NewResult(nil, 2103, err).Fprintf(w)
 		return
 	}
-	room := val.(*Room)
+	if room.Id == "" {
+		NewResult(nil, 0, nil).Fprintf(w)
+		return
+	}
 
 	if room.Player1.Id == player.Id {
 		room.Player1 = nil
@@ -35,13 +43,21 @@ func LeaveRoom(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if room.Player1 == nil && room.Player2 == nil {
-		rooms.Delete(room.Id)
+		collection.DeleteOne(context.Background(), bson.M{"id": room.Id})
 		NewResult("ok", 0, nil).Fprintf(w)
 		return
 	}
 
 	room.Status = 1
-	rooms.Store(room.Id, room)
+
+	collection.UpdateOne(context.Background(), bson.M{"id": room.Id}, bson.M{
+		"$set": bson.M{
+			"status":  room.Status,
+			"player1": room.Player1,
+			"player2": room.Player2,
+		},
+	})
+
 	NewResult("ok", 0, nil).Fprintf(w)
 	return
 }
