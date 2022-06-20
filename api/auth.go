@@ -3,23 +3,10 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/pusher/pusher-http-go/v5"
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
 )
-
-var Client *pusher.Client
-
-func init() {
-	Client = &pusher.Client{
-		AppID:   os.Getenv("APP_ID"),
-		Key:     os.Getenv("APP_KEY"),
-		Secret:  os.Getenv("APP_SECRET"),
-		Cluster: os.Getenv("APP_CLUSTER"),
-	}
-}
 
 func Auth(w http.ResponseWriter, r *http.Request) {
 	if origin := r.Header.Get("Origin"); origin != "" {
