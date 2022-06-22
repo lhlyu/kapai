@@ -19,6 +19,7 @@ const leaveRoom = async () => {
     if (store.role === 'Player') {
         await ApiLeaveRoom(store.getPlayer)
         store.LeaveRoom()
+        router.replace({ path: '/r' })
     }
 }
 </script>
