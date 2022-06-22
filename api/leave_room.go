@@ -35,10 +35,10 @@ func LeaveRoom(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if room.Player1.Id == player.Id {
+	if room.Player1 != nil && room.Player1.Id == player.Id {
 		room.Player1 = nil
 	}
-	if room.Player2.Id == player.Id {
+	if room.Player2 != nil && room.Player2.Id == player.Id {
 		room.Player2 = nil
 	}
 
