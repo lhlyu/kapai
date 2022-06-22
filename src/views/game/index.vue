@@ -17,8 +17,8 @@ const leaveRoom = async () => {
         return
     }
     if (store.role === 'Player') {
-        store.LeaveRoom()
         await ApiLeaveRoom(store.getPlayer)
+        store.LeaveRoom()
     }
 }
 </script>
