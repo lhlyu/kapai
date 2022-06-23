@@ -3,23 +3,11 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/pusher/pusher-http-go/v5"
 	"io/ioutil"
+	"kapai/pkg"
 	"log"
 	"net/http"
-	"os"
 )
-
-var Client *pusher.Client
-
-func init() {
-	Client = &pusher.Client{
-		AppID:   os.Getenv("APP_ID"),
-		Key:     os.Getenv("APP_KEY"),
-		Secret:  os.Getenv("APP_SECRET"),
-		Cluster: os.Getenv("APP_CLUSTER"),
-	}
-}
 
 // Auth pusher 鉴权
 func Auth(w http.ResponseWriter, r *http.Request) {
@@ -37,7 +25,7 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 
 	params, _ := ioutil.ReadAll(r.Body)
 	log.Println("params:", string(params))
-	response, err := Client.AuthenticatePrivateChannel(params)
+	response, err := pkg.Client.AuthenticatePrivateChannel(params)
 	fmt.Println("response:", string(response))
 	NewResult(string(response), 1000, err).Fprintf(w)
 }
