@@ -10,6 +10,6 @@
   ],
   "regions": ["hkg1"],
   "probes": [
-    { "path": "/", "mustContain": "cow:go1.18.1:RANDOMNESS_PLACEHOLDER" }
+    { "path": "/api", "mustContain": "cow:go1.18.1:RANDOMNESS_PLACEHOLDER" }
   ]
 }
