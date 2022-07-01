@@ -7,6 +7,7 @@ import (
 	"github.com/lestrrat-go/jwx/v2/jwa"
 	"github.com/lestrrat-go/jwx/v2/jwt"
 	"kapai/app/util"
+	"log"
 	"os"
 	"time"
 )
@@ -22,12 +23,12 @@ func init() {
 	//X509解码
 	privateKey, err = x509.ParsePKCS1PrivateKey(block.Bytes)
 	if err != nil {
-		util.Log.Panic().Err(err).Msg("ParsePKCS1PrivateKey")
+		log.Panicln(err, len(os.Getenv("JWT_PRIVATE")))
 	}
 	block, _ = pem.Decode([]byte(os.Getenv("JWT_PUBLIC")))
 	publicKey, err = x509.ParsePKCS1PublicKey(block.Bytes)
 	if err != nil {
-		util.Log.Panic().Err(err).Msg("ParsePKCS1PublicKey")
+		log.Panicln(err, len(os.Getenv("JWT_PUBLIC")))
 	}
 }
 
