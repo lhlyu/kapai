@@ -1,6 +1,6 @@
 {
   "functions": {
-    "api/**.go": {
+    "app/api/**.go": {
       "includeFiles": "app/api/**"
     }
   },
