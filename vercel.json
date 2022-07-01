@@ -8,8 +8,5 @@
     { "source": "/api/(.*)", "destination": "/api" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
-  "regions": ["hkg1"],
-  "probes": [
-    { "path": "/api", "mustContain": "cow:go1.18.1:RANDOMNESS_PLACEHOLDER" }
-  ]
+  "regions": ["hkg1"]
 }
