@@ -1,7 +1,7 @@
 {
   "functions": {
     "api/**.go": {
-      "includeFiles": "app/api/**"
+      "includeFiles": "api/**"
     }
   },
   "rewrites": [
