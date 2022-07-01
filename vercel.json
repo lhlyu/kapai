@@ -1,11 +1,11 @@
 {
   "functions": {
-    "api/**.go": {
-      "includeFiles": "api/**"
+    "app/api/**.go": {
+      "includeFiles": "app/api/**"
     }
   },
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api" },
+    { "source": "/app/api/(.*)", "destination": "/api" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "regions": ["hkg1"]
