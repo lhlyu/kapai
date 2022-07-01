@@ -26,10 +26,15 @@ func init() {
 		log.Panicln(err, len(os.Getenv("JWT_PRIVATE")))
 	}
 	block, _ = pem.Decode([]byte(os.Getenv("JWT_PUBLIC")))
-	publicKey, err = x509.ParsePKCS1PublicKey(block.Bytes)
+	pubKey, err := x509.ParsePKIXPublicKey(block.Bytes)
 	if err != nil {
 		log.Panicln(err, len(os.Getenv("JWT_PUBLIC")))
 	}
+	pk, ok := pubKey.(*rsa.PublicKey)
+	if !ok {
+		log.Panicf("got unexpected key type: %T", pubKey)
+	}
+	publicKey = pk
 }
 
 // 生成token
