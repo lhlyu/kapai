@@ -14,8 +14,8 @@ const (
 
 // JoinRoom 加入房间
 // 返回：player - 玩家; audience - 观众
-func (s *Service) JoinRoom(param *model.RoomParam) result.Result[string] {
-	rs := result.NewResult[string]()
+func (s *Service) JoinRoom(param *model.RoomParam) result.Result {
+	rs := result.NewResult()
 	var (
 		room *entity.RoomEntity
 		user *entity.UserEntity

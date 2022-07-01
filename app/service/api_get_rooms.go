@@ -6,8 +6,8 @@ import (
 )
 
 // GetRooms 获取所有的房间
-func (s *Service) GetRooms() result.Result[[]*model.Room] {
-	rs := result.NewResult[[]*model.Room]()
+func (s *Service) GetRooms() result.Result {
+	rs := result.NewResult()
 	datas := s.roomDao.GetAllRooms()
 	if len(datas) == 0 {
 		return rs

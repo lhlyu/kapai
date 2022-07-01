@@ -7,8 +7,8 @@ import (
 	"time"
 )
 
-func (s *Service) CreateRoom() result.Result[string] {
-	rs := result.NewResult[string]()
+func (s *Service) CreateRoom() result.Result {
+	rs := result.NewResult()
 
 	var roomId string
 	for i := 0; i < 10; i++ {

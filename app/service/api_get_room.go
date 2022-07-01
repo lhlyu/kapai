@@ -7,8 +7,8 @@ import (
 )
 
 // GetRoom 获取单个房间的信息
-func (s *Service) GetRoom(roomId string) result.Result[*model.Room] {
-	rs := result.NewResult[*model.Room]()
+func (s *Service) GetRoom(roomId string) result.Result {
+	rs := result.NewResult()
 	data := s.roomDao.GetRoom(roomId)
 	if data == nil {
 		return rs.WithMsg("房间不存在")

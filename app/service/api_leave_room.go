@@ -8,8 +8,8 @@ import (
 )
 
 // LeaveRoom 离开房间
-func (s *Service) LeaveRoom(param *model.RoomParam) result.Result[bool] {
-	rs := result.NewResult[bool]()
+func (s *Service) LeaveRoom(param *model.RoomParam) result.Result {
+	rs := result.NewResult()
 	var (
 		room *entity.RoomEntity
 		user *entity.UserEntity

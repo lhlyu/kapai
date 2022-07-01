@@ -10,8 +10,8 @@ import (
 )
 
 // Login 登陆
-func (s *Service) Login(param *model.LoginParam) result.Result[*model.UserModel] {
-	rs := result.NewResult[*model.UserModel]()
+func (s *Service) Login(param *model.LoginParam) result.Result {
+	rs := result.NewResult()
 	param.Account = strings.TrimSpace(param.Account)
 	param.Password = strings.TrimSpace(param.Password)
 	if param.Account == "" {

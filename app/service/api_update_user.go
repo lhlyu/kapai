@@ -6,8 +6,8 @@ import (
 )
 
 // UpdateUser 更新用户信息
-func (s *Service) UpdateUser(param *model.UpdateUserParam) result.Result[bool] {
-	rs := result.NewResult[bool]()
+func (s *Service) UpdateUser(param *model.UpdateUserParam) result.Result {
+	rs := result.NewResult()
 	data := s.userDao.GetUser(s.account)
 	if data == nil {
 		return rs.WithMsg("用户不存在")
