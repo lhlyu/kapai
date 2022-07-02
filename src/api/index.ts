@@ -1,42 +1,77 @@
-import instance from './request'
+import { request } from './request'
 import {Encode} from '../util'
 
 export const ApiAuthUrl = '/api/auth'
 
-export interface Player {
-    id: string
+
+export interface LoginParam {
+    account: string
+    password: string
+}
+
+export interface UserModel {
+    account: string
     name: string
-    roomId: string
+    avatar: string
+    token?: string
+    decks?: number[]
+    spells?: number[]
+    isNew?: boolean
 }
 
 export interface Room {
     id: string
     status: number
-    player1?: Player
-    player2?: Player
+    black?: UserModel
+    red?: UserModel
+}
+
+// 登陆/注册
+export const ApiLogin = async (param: LoginParam) => {
+    return await request<UserModel>('login', 'k', Encode(JSON.stringify(param)))
 }
 
 // 创建房间
-export const ApiCreateRoom = async (player: Player) => {
-    return await instance.get<Player>(`/api/create_room?r=${Encode(JSON.stringify(player))}`)
+export const ApiCreateRoom = async () => {
+    return await request<string>('create.room')
 }
 
-// 获取房间列表
-export const ApiGetRooms = async () => {
-    return await instance.get<Room[]>('/api/get_rooms')
-}
 
-// 获取房间基本信息
-export const ApiGetRoom = async (id: string) => {
-    return await instance.get<Room>(`/api/get_room?id=${id}`)
+export interface RoomParam {
+    room_id: string
 }
 
 // 加入房间
-export const ApiJoinRoom = async (player: Player) => {
-    return await instance.get(`/api/join_room?r=${Encode(JSON.stringify(player))}`)
+export const ApiJoineRoom = async (param: RoomParam) => {
+    return await request<string>('join.room')
 }
 
 // 离开房间
-export const ApiLeaveRoom = async (player: Player) => {
-    return await instance.get(`/api/leave_room?r=${Encode(JSON.stringify(player))}`)
+export const ApiLeaveRoom = async (param: RoomParam) => {
+    return await request<boolean>('leave.room')
 }
+
+
+// 获取房间信息
+export const ApiGetRoom = async (roomId: string) => {
+    return await request<Room>('get.room', 'r', roomId)
+}
+
+// 获取所有房间
+export const ApiGetRooms = async () => {
+    return await request<Room[]>('get.rooms')
+}
+
+export interface UpdateUserParam {
+    name?: string
+    avatar?: string
+    password?: string
+    decks?: number[]
+    spells?: number[]
+}
+
+// 更新用户信息
+export const ApiUpdateUser = async (param: UpdateUserParam) => {
+    return await request<boolean>('update.user','k', Encode(JSON.stringify(param)))
+}
+

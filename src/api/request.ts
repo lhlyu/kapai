@@ -1,4 +1,5 @@
 import axios from 'axios'
+import type {ReqRes} from "../shims-axios";
 
 const instance = axios.create({
     baseURL: '/',
@@ -12,7 +13,6 @@ instance.interceptors.request.use(config => {
 
 const handlerResponce = () => {
     return {
-        code: 1,
         msg: '',
         data: null
     }
@@ -30,5 +30,16 @@ instance.interceptors.response.use(response => {
     }
     return result
 })
+
+export const request = async <T>(uri: string, field: string = 'k', value: string = ''):Promise<ReqRes.ResponseResult<T>> => {
+    return await instance.get<T>('/api', {
+        headers: {
+            uri: uri
+        },
+        params: {
+            [field]: value
+        }
+    })
+}
 
 export default instance

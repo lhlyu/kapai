@@ -21,7 +21,7 @@ type Room struct {
 	// 房间状态: 1 - 空闲; 2 - 游戏中
 	Status int `json:"status"`
 	// 黑方
-	Black *UserModel `json:"black"`
+	Black *UserModel `json:"black,omitempty"`
 	// 红方
-	Red *UserModel `json:"red"`
+	Red *UserModel `json:"red,omitempty"`
 }

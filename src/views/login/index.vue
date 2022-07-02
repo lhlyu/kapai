@@ -1,73 +1,61 @@
 <template>
     <section>
         <div class="login">
-            <h1>登陆</h1>
-            <input type="text" placeholder="输入昵称" @keydown.enter="loginFn" v-model="name" maxlength="6" />
-            <button @click="loginFn">登陆</button>
+            <input v-model="loginParam.account" spellcheck="false" type="text" size="30" maxlength="12" placeholder="登陆or注册"  autocomplete="off">
+            <!--      设置成password, 浏览器存在自动填充的问题，解决不了，改成text      -->
+            <input v-model="loginParam.password" spellcheck="false" type="text" size="30" maxlength="16" placeholder="密_码" @keydown.enter="loginFn" autocomplete="off">
         </div>
     </section>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import useUserStore from '../../stores/user'
+import {ref} from "vue";
+import useSiteStore from "../../stores/site";
+import type { LoginParam } from "../../api";
+import { ApiLogin } from "../../api";
 
-const router = useRouter()
-const store = useUserStore()
+const site = useSiteStore()
 
-const name = ref('')
+const loginParam = ref<LoginParam>({
+    account: '',
+    password: ''
+})
 
-const loginFn = () => {
-    name.value = name.value.trim()
-    if (!name.value.length) {
-        alert('昵称不能为空')
-        return
-    }
-    store.Login(name.value)
-    router.replace({
-        path: '/r'
-    })
+const loginFn = async () => {
+    site.loading = true
+    const result = await ApiLogin(loginParam.value)
+
+    setTimeout(() => {
+        site.loading = false
+        console.log(result)
+    }, 1000)
 }
+
 </script>
 
 <style lang="scss" scoped>
 section {
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    min-height: 100vh;
     .login {
-        width: 90%;
-        max-width: 460px;
-        box-sizing: border-box;
-        padding: 36px 15px;
-        margin: 0 auto;
-        border: 1px dashed #666;
-        border-radius: 10px;
+        max-width: 400px;
+        width: 100%;
         text-align: center;
         input {
-            height: 36px;
-            font-size: 20px;
-            outline: none;
-            display: block;
-            margin: 26px auto;
-            border: 1px dashed #666;
-            border-radius: 5px;
+            box-sizing: border-box;
+            outline: 0;
+            border: 1px solid #fff;
+            width: 90%;
+            height: 46px;
+            border-radius: 20px;
+            padding: 5px 20px;
+            color: inherit;
+            background-color: #fff;
+            font-size: 16px;
             text-align: center;
-        }
-        button {
-            display: block;
-            margin: 0 auto;
-            padding: 6px 40px;
-            border: 1px dashed #666;
-            border-radius: 5px;
-            outline: none;
-            background: white;
-            &:hover {
-                background: whitesmoke;
-            }
+            margin: 8px 0;
         }
     }
 }
